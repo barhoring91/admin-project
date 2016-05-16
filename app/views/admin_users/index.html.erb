@@ -1,0 +1,17 @@
+<h1>Listing all users in da system</h1>
+
+<table>
+  <tr>
+    <th>U name</th>
+    <th>U password</th>
+    <th colspan="2"></th>
+  </tr>
+
+  <% @all_users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.password %></td>
+      </tr>
+  <% end %>
+</table>
+
