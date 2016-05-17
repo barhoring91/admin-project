@@ -9,10 +9,10 @@ Rails.application.routes.draw do
   root 'admin_users#index'
 
   get 'features' => 'features#get_all_features'
-  get 'accounts/:id' => 'accounts#get_account_info'
-  get 'accounts/:id/features' => 'accounts#get_account_features'
-  post 'accounts/:id/features/' => 'accounts#enable_feature'
-  delete 'accounts/:id/features/:feature_id' => 'accounts#disable_feature'
+  get 'accounts/:app_key' => 'accounts#get_account_info'
+  get 'accounts/:app_key/features' => 'accounts#get_account_features'
+  post 'accounts/:app_key/features/' => 'accounts#enable_feature'
+  delete 'accounts/:app_key/features/:feature_id' => 'accounts#disable_feature'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
