@@ -8,6 +8,12 @@ Rails.application.routes.draw do
   resources :admin_users, except: [:edit, :new]
   root 'admin_users#index'
 
+  get 'features' => 'features#get_all_features'
+  get 'accounts/:id' => 'accounts#get_account_info'
+  get 'accounts/:id/features' => 'accounts#get_account_features'
+  post 'accounts/:id/features/' => 'accounts#enable_feature'
+  delete 'accounts/:id/features/:feature_id' => 'accounts#disable_feature'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
