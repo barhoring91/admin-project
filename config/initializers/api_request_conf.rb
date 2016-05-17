@@ -1,0 +1,1 @@
+API_CONF = YAML.load(ERB.new(File.read("#{Rails.root}/config/api_conf.yml")).result)
