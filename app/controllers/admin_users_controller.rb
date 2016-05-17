@@ -3,7 +3,7 @@ class AdminUsersController < ApplicationController
     @all_users = AdminUser.all
   end
   def create
-    new_user = AdminUser.new(name: params[:name], password: params[:password])
+    new_user = AdminUser.new(name: params[:name], password: params[:password], email: params[:email])
     if new_user.save
       render json: {status: {code: 200, message: :ok}}
     else
@@ -23,7 +23,7 @@ class AdminUsersController < ApplicationController
   end
   def update
     user = AdminUser.find(params[:id])
-    if user.update(name: params[:name], password: params[:password])
+    if user.update(name: params[:name], password: params[:password], email: params[:email])
       render json: {status: {code: 200, message: :ok}}
     else
       render json: {status: {code:500 ,message: 'Something went wrong'}}
