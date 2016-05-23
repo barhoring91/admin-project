@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
   resources :logs, except: [:edit, :new]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -6,7 +8,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   resources :activity_types, except: [:edit, :new]
   resources :admin_users, except: [:edit, :new]
-  root 'admin_users#index'
+  root 'home#index'
 
   get 'features' => 'features#get_all_features'
   get 'accounts/:app_key' => 'accounts#get_account_info'
