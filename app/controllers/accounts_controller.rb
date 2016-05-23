@@ -1,5 +1,6 @@
-class AccountsController < ActionController::Base
+class AccountsController < ApplicationController
   #id is app_key
+  before_action :create_log, only: [:get_account_info, :get_account_features, :enable_feature, :disable_feature]
   def get_account_info
     render :json => ApiRequest::Account.get_account_info(params[:app_key])
   end
