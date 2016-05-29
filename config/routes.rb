@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'login/signin'
+
   get 'home/index'
 
   resources :logs, except: [:edit, :new]
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
   resources :activity_types, except: [:edit, :new]
   resources :admin_users, except: [:edit, :new]
   root 'home#index'
+  get 'login' => 'login#signin'
 
   get 'features' => 'features#get_all_features'
   get 'accounts/:app_key' => 'accounts#get_account_info'

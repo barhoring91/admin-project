@@ -21,6 +21,8 @@ module ApiRequest
       json = {:json => { :id => feature_id, :utoken => @@utoken  }}
       res = HTTP.post(add, json)
       features = JSON.parse(res.body)
+      features[:id] = feature_id;
+      features[:method] = :Enabled;
       ok200(features)
     end
 
@@ -29,6 +31,8 @@ module ApiRequest
       json = {:json => {:utoken => @@utoken  }}
       res = HTTP.delete(add, json)
       features = JSON.parse(res.body)
+      features[:id] = feature_id;
+      features[:method] = :Disabled;
       ok200(features)
     end
 
