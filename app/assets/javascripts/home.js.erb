@@ -1,0 +1,166 @@
+/* avoid polluting the namespace by wrapping the script inside a function */
+(function iife(){
+    var h_all_features = {},
+        h_account_features = {},
+        disabled = {};
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('submit').onclick = generate_route;
+    });
+    function generate_route() {
+
+        var s = 'http://localhost:3000/accounts/';
+        var app_key = document.getElementById("app_key").value;
+        var account_base_url = s + app_key;
+        document.getElementById("site_domain").innerHTML = "wait...";
+
+
+        function HttpRequest(url, callback, method, params) {
+            var xmlhttp = new XMLHttpRequest();
+            var self = this;
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var myArr = JSON.parse(xmlhttp.responseText);
+                    callback.call(self, myArr);
+                }
+            };
+            xmlhttp.open(method, url, true);
+            if (method == "POST") {
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send(params);
+            }
+            else {
+                xmlhttp.send();
+            }
+
+
+        }
+
+        /*print account domain*/
+        HttpRequest(account_base_url, print_info, "GET");
+
+        function print_info(arr) {
+            var out = "domain: <br/>" + arr.app.domain;
+            document.getElementById("site_domain").innerHTML = out;
+        }
+
+        var url_all_features = '<%=Rails.application.routes.url_helpers.features_path%>';
+        HttpRequest(url_all_features, all_features_hash, "GET");
+
+        function all_features_hash(arr) {
+            arr = arr.features;
+            var i;
+            for (i = 0; i < arr.length; i++) {
+                h_all_features[arr[i].id] = arr[i].name
+            }
+            var url_account_features = account_base_url + '/features';
+            HttpRequest(url_account_features, account_features, "GET");
+        }
+
+
+        function account_features(arr) {
+            arr = arr.features;
+            var i;
+            for (i = 0; i < arr.length; i++) {
+                h_account_features[arr[i].id] = arr[i].name
+            }
+            disabled = {};
+            hashSubstruction(h_all_features, h_account_features);
+        }
+
+        function hashSubstruction(h1, h2) {
+            for (var id in h1) {
+                if (!(id in h2)) {
+                    disabled[id] = h1[id];
+                }
+            }
+            print_enabled_disabled(h_account_features, disabled);
+
+        }
+
+        function disable_feature() {
+            var f_id = this.parentElement.parentElement.getAttribute('data-feature-id');
+            var url_delete = account_base_url + "/features/" + f_id;
+            HttpRequest.call(this, url_delete, remove_from_list, "DELETE");
+        }
+
+        function enable_feature() {
+            /*get id of desired feature to enable
+            * this == input button
+            * */
+            var id = this.parentElement.parentElement.getAttribute('data-feature-id');
+            var add_f_url = account_base_url + "/features/";
+            var params = "feature_id=" + id;
+            /*keep context as input button*/
+            HttpRequest.call(this, add_f_url, remove_from_list, "POST", params);
+
+        }
+
+        function remove_from_list(res) {
+            /*remove tr of the soon-to-be-on-the-other-table feature
+            * and fetch relevant parameters for add_feature_to_list()*/
+            var tr = this.parentElement.parentElement;
+            var f_id = tr.getAttribute('data-feature-id');
+            var current_table = tr.parentElement.id;
+            tr.remove();
+            var other_table = "Enabled";
+            if (current_table == "Enabled") {
+                other_table = "Disabled";
+            }
+            current_table = current_table.substr(0,current_table.length-1);
+            create_tr(other_table, f_id, h_all_features, current_table, true);
+        }
+
+        function print_enabled_disabled(enabled, disabled) {
+
+            print_table(disabled, "Disabled");
+            print_table(enabled, "Enabled");
+
+        }
+
+        function print_table(hash, table_name) {
+            var t = document.getElementById(table_name);
+            var other_table = "Enable";
+            if (table_name == "Enabled") {
+                other_table = "Disable";
+            }
+            t.innerHTML = "<tr><td>" + table_name + "</td></tr>";
+            for (var id in hash) {
+                var idname = other_table[0] + id;
+                create_tr(table_name, id, hash, other_table, false);
+            }
+
+        }
+
+        function create_tr(table_name, id, hash, other_table, add_single_tr){
+
+            /*create tr with description and button */
+            var tr = document.createElement("tr");
+            tr.setAttribute("data-feature-id", id);
+            var td1 = document.createElement("td");
+            var node = document.createTextNode(hash[id]);
+            var td2 = document.createElement("td");
+            var btn = document.createElement("input");
+            btn.setAttribute("type", "submit");
+            btn.setAttribute("value", other_table);
+
+            /*append children to table*/
+            tr.appendChild(td1);
+            td1.appendChild(node);
+            tr.appendChild(td2);
+            td2.appendChild(btn);
+            var table = document.getElementById(table_name);
+
+            /*append to top/end of the table if a single tr is to be inserted*/
+            add_single_tr ?table.insertBefore(tr, table.children[1]) : table.appendChild(tr);
+
+
+            /*add on-click method*/
+            var method = disable_feature;
+            if (table_name == "Disabled") {
+                method = enable_feature;
+            }
+            btn.onclick = method;
+        }
+    }
+})();
