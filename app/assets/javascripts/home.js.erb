@@ -40,7 +40,7 @@
         HttpRequest(account_base_url, print_info, "GET");
 
         function print_info(arr) {
-            var out = "domain: <br/>" + arr.app.domain;
+            var out = "<a href="+arr.app.domain+">"+arr.app.domain+"</a>";
             document.getElementById("site_domain").innerHTML = out;
         }
 
@@ -121,10 +121,13 @@
         function print_table(hash, table_name) {
             var t = document.getElementById(table_name);
             var other_table = "Enable";
+            var _class = "bg-danger";
             if (table_name == "Enabled") {
                 other_table = "Disable";
+                _class = "bg-success";
             }
-            t.innerHTML = "<tr><td>" + table_name + "</td></tr>";
+
+            t.innerHTML = "<tr class="+_class+"><td>" + table_name + "</td><td></td></tr>";
             for (var id in hash) {
                 var idname = other_table[0] + id;
                 create_tr(table_name, id, hash, other_table, false);
@@ -141,6 +144,7 @@
             var node = document.createTextNode(hash[id]);
             var td2 = document.createElement("td");
             var btn = document.createElement("input");
+            btn.setAttribute("class","btn btn-primary btn-xs");
             btn.setAttribute("type", "submit");
             btn.setAttribute("value", other_table);
 
