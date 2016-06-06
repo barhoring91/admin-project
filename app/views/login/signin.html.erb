@@ -1,8 +1,8 @@
 </br>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-2 col-md-offset-4">
-      <form action="/login">
+    <div class="col-md-3 col-md-offset-5">
+      <form action="/login" method=\"post\">
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
           <input name="email" type="email" class="form-control" id="email" placeholder="Email">
@@ -12,10 +12,18 @@
           <input name="password" type="password" class="form-control" id="password" placeholder="Password">
         </div>
         <input type="submit" class="btn btn-info">
-        <% if(!defined?(valid).nil? %>
-            <%= @valid %>
-        <% end %>
       </form>
+    </div>
+  </div>
+  </br></br>
+  <div class="row">
+    <div class="col-md-3 col-md-offset-5">
+      <p class="bg-danger">
+        <% if (!defined?(@valid).nil?) %>
+            You are not authorized
+            </br></br>
+        <% end %>
+      </p>
     </div>
   </div>
 </div>

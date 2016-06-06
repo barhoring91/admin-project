@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
     name = @@hash[caller]
     activity_id = ActivityType.where(name: name).pluck('id')[0]
     app_key = caller.to_s == 'get_all_features' ? 'dummy' : params[:app_key]
-    Log.create(app_key: app_key, admin_user_id: 12, activity_type_id: activity_id)
+    Log.create(app_key: app_key, admin_user_id: 1, activity_type_id: activity_id)
   end
 end

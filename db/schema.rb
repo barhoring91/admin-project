@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160516090129) do
+ActiveRecord::Schema.define(version: 20160602115351) do
 
   create_table "activity_types", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -40,6 +40,16 @@ ActiveRecord::Schema.define(version: 20160516090129) do
   add_index "logs", ["activity_type_id"], name: "index_logs_on_activity_type_id", using: :btree
   add_index "logs", ["admin_user_id"], name: "index_logs_on_admin_user_id", using: :btree
 
+  create_table "tokens", force: :cascade do |t|
+    t.string   "token",         limit: 255, null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "admin_user_id", limit: 4,   null: false
+  end
+
+  add_index "tokens", ["admin_user_id"], name: "index_tokens_on_admin_user_id", using: :btree
+
   add_foreign_key "logs", "activity_types"
   add_foreign_key "logs", "admin_users"
+  add_foreign_key "tokens", "admin_users"
 end
