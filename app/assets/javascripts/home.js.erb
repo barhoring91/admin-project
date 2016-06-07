@@ -4,8 +4,17 @@
         h_account_features = {},
         disabled = {};
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('submit').onclick = generate_route;
+
+    $(document).ready(function () {
+        debugger;
+        $('#submit').bind('click', generate_route);
+        $('#logout').bind('click', logout);
+        function logout(){
+            /*delete token and redirect to log in*/
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            window.location = "http://localhost:3000/";
+
+        }
     });
     function generate_route() {
 
@@ -35,7 +44,6 @@
 
 
         }
-        debugger;
         /*print account domain*/
         HttpRequest(account_base_url, print_info, "GET");
 
@@ -88,6 +96,7 @@
             /*get id of desired feature to enable
             * this == input button
             * */
+            debugger;
             var id = this.parentElement.parentElement.getAttribute('data-feature-id');
             var add_f_url = account_base_url + "/features/";
             var params = "feature_id=" + id;

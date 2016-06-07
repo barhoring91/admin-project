@@ -2,6 +2,14 @@
   </br>
   <div class="row">
     <div class="col-md-3 col-md-offset-4">
+      <h1>Welcome, <%= @user.name %></h1>
+    </div>
+    <div class="col-md-1">
+      <input type="button" id="logout" value="Log out" class="btn btn-warning">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 col-md-offset-4">
       <input type="text" id="app_key" class="form-control" value="ddY0OFQeb180KIjdOe65vsRoSyC0DK2Mo50L3vhX">
     </div>
     <div class="col-md-1"><input type="submit" id="submit" value="Search" class="btn btn-info"></div>

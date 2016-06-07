@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  get 'login/signin'
+
+  #get 'login/signin'
+  #post 'login/signin'
+
 
   get 'home/index'
 
@@ -10,8 +13,12 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   resources :activity_types, except: [:edit, :new]
   resources :admin_users, except: [:edit, :new]
+
   root 'home#index'
-  get 'login' => 'login#signin'
+
+  get 'index' => 'login#index'
+  post 'login' => 'login#signin'
+
 
   get 'features' => 'features#get_all_features'
   get 'accounts/:app_key' => 'accounts#get_account_info'

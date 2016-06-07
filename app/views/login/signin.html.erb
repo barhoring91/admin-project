@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3 col-md-offset-5">
-      <form action="/login" method=\"post\">
+      <form method="post" action="/login">
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
           <input name="email" type="email" class="form-control" id="email" placeholder="Email">
@@ -16,14 +16,14 @@
     </div>
   </div>
   </br></br>
-  <div class="row">
-    <div class="col-md-3 col-md-offset-5">
-      <p class="bg-danger">
-        <% if (!defined?(@valid).nil?) %>
+  <% if (defined?(@valid)) %>
+      <div class="row">
+        <div class="col-md-3 col-md-offset-5">
+          <p class="bg-danger">
             You are not authorized
             </br></br>
-        <% end %>
-      </p>
-    </div>
-  </div>
+          </p>
+        </div>
+      </div>
+  <% end %>
 </div>

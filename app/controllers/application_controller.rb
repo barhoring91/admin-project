@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     name = @@hash[caller]
     activity_id = ActivityType.where(name: name).pluck('id')[0]
     app_key = caller.to_s == 'get_all_features' ? 'dummy' : params[:app_key]
-    Log.create(app_key: app_key, admin_user_id: 1, activity_type_id: activity_id)
+    #get token from cookie
+    token = request.env['HTTP_COOKIE'].split(';')[0]
+    token.slice!(0,6)
+    admin_user_id = Token.find_by_token(token).admin_user_id
+    Log.create(app_key: app_key, admin_user_id: admin_user_id, activity_type_id: activity_id)
   end
 end
